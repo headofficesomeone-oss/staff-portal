@@ -33,12 +33,12 @@
           ご本人に必要なPDFだけを表示します。
         </p>
 
-        <div id="status" class="status"></div>
-
-        <form id="loginForm">
+        <!-- ★ action を SAMUWAN のGASウェブアプリURLに変更してください -->
+        <form id="loginForm" method="post" action="https://script.google.com/macros/s/AKfycbxGcOIS1mTxEhQjpitQryaUBLC-W7lHW5XQCLd1VkELGy8MqHAOhHAgGCDgkIdx7zgi/exec">
+          <input type="hidden" name="action" value="login">
 
           <label for="staffId">職員ID</label>
-          <input id="staffId" name="username" type="text" autocomplete="username" placeholder="例：S001" required>
+          <input id="staffId" name="staffId" type="text" autocomplete="username" placeholder="例：S001" required>
 
           <label for="password">パスワード</label>
           <input id="password" name="password" type="password" autocomplete="current-password" placeholder="パスワード" required>
@@ -52,7 +52,6 @@
           </label>
 
           <button id="loginButton" type="submit">ログインする</button>
-
         </form>
 
         <p class="note">
@@ -62,139 +61,30 @@
 
       </div>
 
-      <div id="portal" class="portal">
-
-        <div class="portal-header">
-          <div class="portal-icon">📄</div>
-          <h1 id="welcomeName"></h1>
-          <p>閲覧可能なファイル一覧です</p>
-        </div>
-
-        <div id="fileList" class="file-list"></div>
-
-        <button class="logout" type="button" onclick="logout()">ログアウト</button>
-
-      </div>
-
     </div>
 
   </div>
 
 <script>
-const GAS_API_URL = "ここにGASのウェブアプリURLを入れる";
+  window.addEventListener("load", function() {
+    const savedStaffId = localStorage.getItem("samuwan_staffId");
 
-const form = document.getElementById("loginForm");
-const statusBox = document.getElementById("status");
-const loginButton = document.getElementById("loginButton");
-
-window.addEventListener("load", function() {
-  const savedStaffId = localStorage.getItem("samuwan_staffId");
-
-  if (savedStaffId) {
-    document.getElementById("staffId").value = savedStaffId;
-    document.getElementById("rememberId").checked = true;
-  }
-});
-
-form.addEventListener("submit", async function(event) {
-  event.preventDefault();
-
-  const staffId = document.getElementById("staffId").value.trim();
-  const password = document.getElementById("password").value;
-  const remember = document.getElementById("rememberId").checked;
-
-  if (!staffId || !password) {
-    showError("職員IDとパスワードを入力してください。");
-    return;
-  }
-
-  if (remember) {
-    localStorage.setItem("samuwan_staffId", staffId);
-  } else {
-    localStorage.removeItem("samuwan_staffId");
-  }
-
-  if (GAS_API_URL.includes("https://script.google.com/macros/s/AKfycbxxO9xWSBWzvccfbc_nlEx2k1Ny0deajTkMAlxWur5tZaCp2dC9jJpLgSYpe4jq6HQh/exec")) {
-    showError("GAS_API_URLを設定してください。");
-    return;
-  }
-
-  loginButton.disabled = true;
-  loginButton.textContent = "確認中...";
-
-  try {
-    const response = await fetch(GAS_API_URL, {
-      method: "POST",
-      body: JSON.stringify({
-        action: "login",
-        staffId: staffId,
-        password: password
-      })
-    });
-
-    const result = await response.json();
-
-    if (!result.success) {
-      showError(result.message || "ログインできませんでした。");
-      return;
+    if (savedStaffId) {
+      document.getElementById("staffId").value = savedStaffId;
+      document.getElementById("rememberId").checked = true;
     }
-
-    showPortal(result);
-
-  } catch (error) {
-    showError("通信エラーが発生しました。");
-  } finally {
-    loginButton.disabled = false;
-    loginButton.textContent = "ログインする";
-  }
-});
-
-function showError(message) {
-  statusBox.textContent = message;
-  statusBox.className = "status error";
-}
-
-function showPortal(result) {
-  document.getElementById("loginArea").style.display = "none";
-  document.getElementById("portal").style.display = "block";
-
-  document.getElementById("welcomeName").textContent = result.staffName + " さん";
-
-  const fileList = document.getElementById("fileList");
-  fileList.innerHTML = "";
-
-  if (!result.files || result.files.length === 0) {
-    fileList.innerHTML = "<div class='empty'>現在、閲覧可能なファイルはありません。</div>";
-    return;
-  }
-
-  result.files.forEach(function(file) {
-    const a = document.createElement("a");
-    a.className = "file";
-    a.href = file.viewUrl;
-    a.target = "_blank";
-    a.rel = "noopener";
-    a.innerHTML = "<span>🧾 " + escapeHtml(file.title) + "</span><em>開く</em>";
-    fileList.appendChild(a);
   });
-}
 
-function logout() {
-  document.getElementById("portal").style.display = "none";
-  document.getElementById("loginArea").style.display = "block";
-  document.getElementById("password").value = "";
-  statusBox.className = "status";
-  statusBox.textContent = "";
-}
+  document.getElementById("loginForm").addEventListener("submit", function() {
+    const staffId = document.getElementById("staffId").value.trim();
+    const remember = document.getElementById("rememberId").checked;
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
+    if (remember) {
+      localStorage.setItem("samuwan_staffId", staffId);
+    } else {
+      localStorage.removeItem("samuwan_staffId");
+    }
+  });
 </script>
 
 </body>
