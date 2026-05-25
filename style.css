@@ -1,0 +1,276 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+  color: #4a3b3b;
+  background:
+    radial-gradient(circle at 15% 15%, #ffd6e7 0, transparent 28%),
+    radial-gradient(circle at 85% 20%, #d8f3ff 0, transparent 26%),
+    radial-gradient(circle at 50% 95%, #fff2b8 0, transparent 30%),
+    linear-gradient(135deg, #fff7fb, #f2fbff);
+}
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  overflow: hidden;
+}
+
+.decor {
+  position: fixed;
+  font-size: 54px;
+  opacity: 0.32;
+  pointer-events: none;
+}
+
+.decor1 {
+  top: 8%;
+  left: 9%;
+}
+
+.decor2 {
+  right: 10%;
+  top: 14%;
+}
+
+.decor3 {
+  left: 12%;
+  bottom: 10%;
+}
+
+.card {
+  width: 100%;
+  max-width: 430px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 3px solid #ffffff;
+  border-radius: 34px;
+  padding: 30px;
+  box-shadow: 0 20px 60px rgba(255, 128, 171, 0.22);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.logo-mark {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  font-size: 34px;
+  background: linear-gradient(135deg, #ffe0ec, #e0f2fe);
+  border: 2px solid #fff;
+  box-shadow: 0 10px 24px rgba(255, 128, 171, 0.2);
+}
+
+.logo-title {
+  font-size: 25px;
+  font-weight: 900;
+  color: #f06292;
+  letter-spacing: 0.04em;
+}
+
+.logo-sub {
+  color: #8b7b83;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+h1 {
+  margin: 0 0 10px;
+  text-align: center;
+  color: #6d4c41;
+  font-size: 26px;
+}
+
+.message {
+  text-align: center;
+  color: #78666d;
+  line-height: 1.8;
+  font-size: 14px;
+  margin-bottom: 22px;
+}
+
+label {
+  display: block;
+  margin: 16px 0 7px;
+  color: #6d4c41;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  border: 2px solid #ffd1dc;
+  background: #fff;
+  border-radius: 18px;
+  padding: 14px 15px;
+  font-size: 16px;
+  outline: none;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #f48fb1;
+  box-shadow: 0 0 0 4px rgba(244, 143, 177, 0.18);
+}
+
+.remember {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 18px 0;
+  padding: 13px;
+  border-radius: 18px;
+  background: #fff8fb;
+  border: 2px dashed #ffc1d6;
+  cursor: pointer;
+}
+
+.remember input {
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  accent-color: #f06292;
+}
+
+.remember strong {
+  display: block;
+  color: #795548;
+  font-size: 14px;
+}
+
+.remember small {
+  color: #99858d;
+  font-size: 12px;
+}
+
+button {
+  width: 100%;
+  border: none;
+  border-radius: 20px;
+  padding: 15px;
+  color: white;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff8fab, #9ed8ff);
+  box-shadow: 0 12px 26px rgba(255, 143, 171, 0.28);
+}
+
+button:disabled {
+  opacity: 0.65;
+}
+
+.note {
+  margin-top: 18px;
+  color: #8d7b82;
+  font-size: 12px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.status {
+  display: none;
+}
+
+.error {
+  display: block;
+  padding: 12px;
+  border-radius: 16px;
+  background: #fff0f3;
+  color: #c2185b;
+  font-weight: bold;
+  margin-bottom: 14px;
+  border: 2px solid #ffc1d6;
+}
+
+.portal {
+  display: none;
+}
+
+.portal-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.portal-icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 12px;
+  border-radius: 24px;
+  background: #fff1f7;
+  font-size: 34px;
+}
+
+.portal-header p {
+  color: #78666d;
+  margin: 0;
+}
+
+.file-list {
+  display: grid;
+  gap: 10px;
+}
+
+.file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  background: #ffffff;
+  border: 2px solid #ffe0ec;
+  border-radius: 18px;
+  color: #5d4037;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.file em {
+  font-style: normal;
+  color: #f06292;
+  font-size: 13px;
+}
+
+.empty {
+  padding: 16px;
+  background: #fff8fb;
+  border-radius: 18px;
+  text-align: center;
+  color: #8d7b82;
+}
+
+.logout {
+  margin-top: 18px;
+  background: linear-gradient(135deg, #b0bec5, #90a4ae);
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 16px;
+  }
+
+  .card {
+    padding: 24px;
+    border-radius: 28px;
+  }
+
+  .decor {
+    font-size: 38px;
+  }
+}
