@@ -1,615 +1,201 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Staff Portal | 合同会社さむわん</title>
-  <style>
-    :root {
-      --bg1: #0f172a;
-      --bg2: #1e3a8a;
-      --accent: #60a5fa;
-      --accent2: #a78bfa;
-      --card: rgba(255, 255, 255, 0.13);
-      --card-border: rgba(255, 255, 255, 0.22);
-      --text: #f8fafc;
-      --muted: #cbd5e1;
-      --danger: #fecaca;
-      --danger-bg: rgba(239, 68, 68, 0.18);
-      --success: #bbf7d0;
-      --success-bg: rgba(34, 197, 94, 0.18);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 10% 20%, rgba(96, 165, 250, 0.45), transparent 32%),
-        radial-gradient(circle at 88% 12%, rgba(167, 139, 250, 0.42), transparent 30%),
-        linear-gradient(135deg, var(--bg1), var(--bg2));
-      overflow-x: hidden;
-    }
-
-    .orb {
-      position: fixed;
-      border-radius: 999px;
-      filter: blur(12px);
-      opacity: 0.45;
-      animation: float 9s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    .orb.one {
-      width: 180px;
-      height: 180px;
-      background: #38bdf8;
-      left: -50px;
-      bottom: 12%;
-    }
-
-    .orb.two {
-      width: 260px;
-      height: 260px;
-      background: #8b5cf6;
-      right: -80px;
-      top: 18%;
-      animation-delay: -3s;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-28px); }
-    }
-
-    .wrap {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-    }
-
-    .shell {
-      width: min(980px, 100%);
-      display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    .hero,
-    .login-card {
-      border: 1px solid var(--card-border);
-      background: var(--card);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
-      border-radius: 28px;
-    }
-
-    .hero {
-      padding: 40px;
-      min-height: 520px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: auto -80px -90px auto;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, rgba(96, 165, 250, 0.65), rgba(167, 139, 250, 0.55));
-      filter: blur(8px);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-    }
-
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 12px 28px rgba(96, 165, 250, 0.28);
-      font-weight: 900;
-    }
-
-    h1 {
-      font-size: clamp(34px, 5vw, 56px);
-      line-height: 1.08;
-      margin: 34px 0 16px;
-      letter-spacing: -0.04em;
-    }
-
-    .lead {
-      max-width: 520px;
-      color: var(--muted);
-      line-height: 1.9;
-      font-size: 16px;
-    }
-
-    .feature-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 34px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .feature {
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.11);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-    }
-
-    .feature .icon {
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-
-    .feature .label {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .login-card {
-      padding: 34px;
-      min-height: 520px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .login-title {
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .login-subtitle {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
-      margin-bottom: 28px;
-    }
-
-    .status {
-      display: none;
-      padding: 12px 14px;
-      border-radius: 14px;
-      margin-bottom: 18px;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .status.error {
-      display: block;
-      background: var(--danger-bg);
-      color: var(--danger);
-      border: 1px solid rgba(248, 113, 113, 0.35);
-    }
-
-    .status.success {
-      display: block;
-      background: var(--success-bg);
-      color: var(--success);
-      border: 1px solid rgba(74, 222, 128, 0.35);
-    }
-
-    .field {
-      margin-bottom: 18px;
-    }
-
-    label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      color: #e2e8f0;
-      margin-bottom: 8px;
-      font-weight: 700;
-    }
-
-    .hint {
-      color: #94a3b8;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    input {
-      width: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      background: rgba(15, 23, 42, 0.36);
-      color: var(--text);
-      border-radius: 16px;
-      padding: 15px 16px;
-      font-size: 16px;
-      outline: none;
-      transition: 0.2s ease;
-    }
-
-    input::placeholder {
-      color: #94a3b8;
-    }
-
-    input:focus {
-      border-color: rgba(96, 165, 250, 0.85);
-      box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
-      background: rgba(15, 23, 42, 0.5);
-    }
-
-    .password-wrap {
-      position: relative;
-    }
-
-    .toggle {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      border: none;
-      color: #dbeafe;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 8px 10px;
-      cursor: pointer;
-    }
-
-    .main-button {
-      width: 100%;
-      border: none;
-      border-radius: 18px;
-      padding: 16px;
-      margin-top: 8px;
-      color: #0f172a;
-      font-size: 16px;
-      font-weight: 900;
-      cursor: pointer;
-      background: linear-gradient(135deg, #bfdbfe, #ddd6fe);
-      box-shadow: 0 18px 34px rgba(96, 165, 250, 0.24);
-      transition: 0.2s ease;
-    }
-
-    .main-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 22px 40px rgba(96, 165, 250, 0.34);
-    }
-
-    .main-button:disabled {
-      opacity: 0.7;
-      cursor: wait;
-      transform: none;
-    }
-
-    .footer-note {
-      margin-top: 24px;
-      color: #cbd5e1;
-      font-size: 12px;
-      line-height: 1.8;
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(15, 23, 42, 0.24);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .portal {
-      display: none;
-      margin-top: 22px;
-    }
-
-    .portal.active {
-      display: block;
-    }
-
-    .portal-head {
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      margin-bottom: 14px;
-    }
-
-    .portal-head strong {
-      display: block;
-      font-size: 18px;
-      margin-bottom: 6px;
-    }
-
-    .file-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .file-link {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
-      border-radius: 16px;
-      color: var(--text);
-      text-decoration: none;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      transition: 0.18s ease;
-    }
-
-    .file-link:hover {
-      transform: translateX(3px);
-      background: rgba(255, 255, 255, 0.16);
-    }
-
-    .logout {
-      margin-top: 14px;
-      width: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      background: transparent;
-      color: #e2e8f0;
-      border-radius: 16px;
-      padding: 12px;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    @media (max-width: 840px) {
-      .shell {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        min-height: auto;
-      }
-
-      .feature-row {
-        grid-template-columns: 1fr;
-      }
-
-      .login-card {
-        min-height: auto;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAMUWAN Staff Portal</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="orb one"></div>
-  <div class="orb two"></div>
 
-  <main class="wrap">
-    <section class="shell">
-      <div class="hero">
-        <div>
-          <div class="brand">
-            <div class="brand-mark">S</div>
-            <div>SAMUWAN STAFF PORTAL</div>
-          </div>
+  <div class="page">
 
-          <h1>必要な情報を、<br>本人だけに。</h1>
+    <div class="decor decor1">🐾</div>
+    <div class="decor decor2">🌼</div>
+    <div class="decor decor3">☁️</div>
 
-          <p class="lead">
-            給与明細・各種PDF・職員向けのお知らせを確認するための専用ページです。
-            職員IDとパスワードでログインしてください。
-          </p>
+    <div class="card">
 
-          <div class="feature-row">
-            <div class="feature">
-              <div class="icon">🔐</div>
-              <div class="label">本人確認後に<br>個別情報を表示</div>
-            </div>
-            <div class="feature">
-              <div class="icon">📄</div>
-              <div class="label">給与明細PDFを<br>一覧で確認</div>
-            </div>
-            <div class="feature">
-              <div class="icon">📱</div>
-              <div class="label">スマホでも<br>見やすい画面</div>
-            </div>
+      <div id="loginArea">
+
+        <div class="logo">
+          <div class="logo-mark">🐶</div>
+          <div>
+            <div class="logo-title">SAMUWAN</div>
+            <div class="logo-sub">Staff Portal</div>
           </div>
         </div>
+
+        <h1>おつかれさまです</h1>
+
+        <p class="message">
+          職員IDとパスワードを入力してください。<br>
+          ご本人に必要なPDFだけを表示します。
+        </p>
+
+        <div id="status" class="status"></div>
+
+        <form id="loginForm">
+
+          <label for="staffId">職員ID</label>
+          <input id="staffId" name="username" type="text" autocomplete="username" placeholder="例：S001" required>
+
+          <label for="password">パスワード</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="パスワード" required>
+
+          <label class="remember">
+            <input type="checkbox" id="rememberId">
+            <span>
+              <strong>職員IDを保存する</strong>
+              <small>この端末に職員IDだけ保存します</small>
+            </span>
+          </label>
+
+          <button id="loginButton" type="submit">ログインする</button>
+
+        </form>
+
+        <p class="note">
+          ※ パスワードはこのページには保存しません。<br>
+          ※ 共有端末では職員IDを保存しないでください。
+        </p>
+
       </div>
 
-      <div class="login-card">
-        <div id="loginArea">
-          <div class="login-title">ログイン</div>
-          <div class="login-subtitle">
-            職員IDとパスワードを入力してください。<br>
-            ログイン後、ご本人の情報のみ表示されます。
-          </div>
+      <div id="portal" class="portal">
 
-          <div id="status" class="status"></div>
-
-          <form id="loginForm">
-            <div class="field">
-              <label for="staffId">
-                職員ID
-                <span class="hint">Staff ID</span>
-              </label>
-              <input id="staffId" name="staffId" type="text" placeholder="例：S001" autocomplete="username" required>
-            </div>
-
-            <div class="field">
-              <label for="password">
-                パスワード
-                <span class="hint">Password</span>
-              </label>
-              <div class="password-wrap">
-                <input id="password" name="password" type="password" placeholder="パスワード" autocomplete="current-password" required>
-                <button class="toggle" type="button" onclick="togglePassword()">表示</button>
-              </div>
-            </div>
-
-            <button id="loginButton" class="main-button" type="submit">ログインする</button>
-          </form>
-
-          <div class="footer-note">
-            ※ 共有端末で利用する場合は、確認後に必ずログアウトしてください。<br>
-            ※ パスワードを忘れた場合は管理者へ連絡してください。
-          </div>
+        <div class="portal-header">
+          <div class="portal-icon">📄</div>
+          <h1 id="welcomeName"></h1>
+          <p>閲覧可能なファイル一覧です</p>
         </div>
 
-        <div id="portal" class="portal">
-          <div class="portal-head">
-            <strong id="welcomeName">こんにちは</strong>
-            <span id="portalMessage">閲覧可能なファイル一覧です。</span>
-          </div>
+        <div id="fileList" class="file-list"></div>
 
-          <div id="fileList" class="file-list"></div>
+        <button class="logout" type="button" onclick="logout()">ログアウト</button>
 
-          <button class="logout" type="button" onclick="logout()">ログアウト</button>
-        </div>
       </div>
-    </section>
-  </main>
 
-  <script>
-    /*
-      ここをGASのウェブアプリURLに差し替えてください。
-      例：https://script.google.com/macros/s/XXXXXXXXXXXX/exec
-    */
-    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxxO9xWSBWzvccfbc_nlEx2k1Ny0deajTkMAlxWur5tZaCp2dC9jJpLgSYpe4jq6HQh/exec";
+    </div>
 
-    const form = document.getElementById("loginForm");
-    const statusBox = document.getElementById("status");
-    const loginButton = document.getElementById("loginButton");
+  </div>
 
-    form.addEventListener("submit", async function(event) {
-      event.preventDefault();
+<script>
+const GAS_API_URL = "ここにGASのウェブアプリURLを入れる";
 
-      const staffId = document.getElementById("staffId").value.trim();
-      const password = document.getElementById("password").value;
+const form = document.getElementById("loginForm");
+const statusBox = document.getElementById("status");
+const loginButton = document.getElementById("loginButton");
 
-      if (!staffId || !password) {
-        showStatus("職員IDとパスワードを入力してください。", "error");
-        return;
-      }
+window.addEventListener("load", function() {
+  const savedStaffId = localStorage.getItem("samuwan_staffId");
 
-      if (GAS_API_URL.includes("ここにGAS")) {
-        showStatus("GAS_API_URLを設定するとログイン処理が動きます。現在は画面確認用です。", "error");
-        showDemoPortal();
-        return;
-      }
+  if (savedStaffId) {
+    document.getElementById("staffId").value = savedStaffId;
+    document.getElementById("rememberId").checked = true;
+  }
+});
 
-      loginButton.disabled = true;
-      loginButton.textContent = "確認中...";
+form.addEventListener("submit", async function(event) {
+  event.preventDefault();
 
-      try {
-        const response = await fetch(GAS_API_URL, {
-          method: "POST",
-          body: JSON.stringify({
-            action: "login",
-            staffId: staffId,
-            password: password
-          })
-        });
+  const staffId = document.getElementById("staffId").value.trim();
+  const password = document.getElementById("password").value;
+  const remember = document.getElementById("rememberId").checked;
 
-        const result = await response.json();
+  if (!staffId || !password) {
+    showError("職員IDとパスワードを入力してください。");
+    return;
+  }
 
-        if (!result.success) {
-          showStatus(result.message || "職員IDまたはパスワードが違います。", "error");
-          return;
-        }
+  if (remember) {
+    localStorage.setItem("samuwan_staffId", staffId);
+  } else {
+    localStorage.removeItem("samuwan_staffId");
+  }
 
-        showPortal(result);
+  if (GAS_API_URL.includes("https://script.google.com/macros/s/AKfycbxxO9xWSBWzvccfbc_nlEx2k1Ny0deajTkMAlxWur5tZaCp2dC9jJpLgSYpe4jq6HQh/exec")) {
+    showError("GAS_API_URLを設定してください。");
+    return;
+  }
 
-      } catch (error) {
-        showStatus("通信エラーが発生しました。時間をおいて再度お試しください。", "error");
-      } finally {
-        loginButton.disabled = false;
-        loginButton.textContent = "ログインする";
-      }
+  loginButton.disabled = true;
+  loginButton.textContent = "確認中...";
+
+  try {
+    const response = await fetch(GAS_API_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "login",
+        staffId: staffId,
+        password: password
+      })
     });
 
-    function showStatus(message, type) {
-      statusBox.textContent = message;
-      statusBox.className = "status " + type;
+    const result = await response.json();
+
+    if (!result.success) {
+      showError(result.message || "ログインできませんでした。");
+      return;
     }
 
-    function togglePassword() {
-      const password = document.getElementById("password");
-      const button = document.querySelector(".toggle");
+    showPortal(result);
 
-      if (password.type === "password") {
-        password.type = "text";
-        button.textContent = "非表示";
-      } else {
-        password.type = "password";
-        button.textContent = "表示";
-      }
-    }
+  } catch (error) {
+    showError("通信エラーが発生しました。");
+  } finally {
+    loginButton.disabled = false;
+    loginButton.textContent = "ログインする";
+  }
+});
 
-    function showPortal(result) {
-      document.getElementById("loginArea").style.display = "none";
-      document.getElementById("portal").classList.add("active");
-      document.getElementById("welcomeName").textContent = result.staffName + " さん";
-      document.getElementById("portalMessage").textContent = "閲覧可能なファイル一覧です。";
+function showError(message) {
+  statusBox.textContent = message;
+  statusBox.className = "status error";
+}
 
-      const fileList = document.getElementById("fileList");
-      fileList.innerHTML = "";
+function showPortal(result) {
+  document.getElementById("loginArea").style.display = "none";
+  document.getElementById("portal").style.display = "block";
 
-      if (!result.files || result.files.length === 0) {
-        fileList.innerHTML = "<div class='footer-note'>現在、閲覧可能なファイルはありません。</div>";
-        return;
-      }
+  document.getElementById("welcomeName").textContent = result.staffName + " さん";
 
-      result.files.forEach(function(file) {
-        const a = document.createElement("a");
-        a.className = "file-link";
-        a.href = file.viewUrl;
-        a.target = "_blank";
-        a.rel = "noopener";
-        a.innerHTML = "<span>" + escapeHtml(file.title) + "</span><span>開く →</span>";
-        fileList.appendChild(a);
-      });
-    }
+  const fileList = document.getElementById("fileList");
+  fileList.innerHTML = "";
 
-    function showDemoPortal() {
-      showPortal({
-        success: true,
-        staffName: "山田 太郎",
-        files: [
-          { title: "2026年5月 給与明細", viewUrl: "#" },
-          { title: "2026年4月 給与明細", viewUrl: "#" },
-          { title: "源泉徴収票", viewUrl: "#" }
-        ]
-      });
-    }
+  if (!result.files || result.files.length === 0) {
+    fileList.innerHTML = "<div class='empty'>現在、閲覧可能なファイルはありません。</div>";
+    return;
+  }
 
-    function logout() {
-      document.getElementById("portal").classList.remove("active");
-      document.getElementById("loginArea").style.display = "block";
-      document.getElementById("password").value = "";
-      statusBox.className = "status";
-      statusBox.textContent = "";
-    }
+  result.files.forEach(function(file) {
+    const a = document.createElement("a");
+    a.className = "file";
+    a.href = file.viewUrl;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.innerHTML = "<span>🧾 " + escapeHtml(file.title) + "</span><em>開く</em>";
+    fileList.appendChild(a);
+  });
+}
 
-    function escapeHtml(value) {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-  </script>
+function logout() {
+  document.getElementById("portal").style.display = "none";
+  document.getElementById("loginArea").style.display = "block";
+  document.getElementById("password").value = "";
+  statusBox.className = "status";
+  statusBox.textContent = "";
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+</script>
+
 </body>
 </html>
